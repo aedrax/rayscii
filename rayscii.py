@@ -9,12 +9,43 @@ def main():
     # terminal, and create various internal data structures
     stdscr = init_curses_window()
 
-    stdscr.addstr(0, 0, "Test", curses.A_REVERSE)
+    
     stdscr.refresh()
     # wait 2 seconds before cleaning up curses
     sleep(2)
 
+    x = 0
+    y = 0
+    while True:
+        stdscr.addstr(y, x, "X", curses.A_REVERSE)
+        c = stdscr.getch()
+        if c == ord('w'):
+            y -= 1
+        elif c == ord('a'):
+            x -= 1
+        elif c == ord('s'):
+            y += 1
+        elif c == ord('d'):
+            x += 1
+        x, y = check_bounds(stdscr, x, y)
+        
+
     end_curses_window(stdscr)
+
+def check_bounds(window, x, y):
+    y_max, x_max = window.getmaxyx()
+    x_max -= 1
+    y_max -= 1
+    
+    if x < 0:
+        x = 0
+    elif x > x_max:
+        x = x_max
+    if y < 0:
+        y = 0
+    elif y > y_max:
+        y = y_max
+    return x, y
 
 def end_curses_window(stdscr):
     curses.nocbreak()
