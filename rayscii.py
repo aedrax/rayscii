@@ -5,11 +5,17 @@ from time import sleep
 
 
 def main():
-    # determine the terminal type, send any required setup codes to the
-    # terminal, and create various internal data structures
-    stdscr = init_curses_window()
-
+    try:
+        # determine the terminal type, send any required setup codes to the
+        # terminal, and create various internal data structures
+        stdscr = init_curses_window()
+        run(stdscr)
+    finally:
+        end_curses_window(stdscr)
     
+        
+
+def run(stdscr):
     stdscr.refresh()
     # wait 2 seconds before cleaning up curses
     sleep(2)
@@ -28,9 +34,6 @@ def main():
         elif c == ord('d'):
             x += 1
         x, y = check_bounds(stdscr, x, y)
-        
-
-    end_curses_window(stdscr)
 
 def check_bounds(window, x, y):
     y_max, x_max = window.getmaxyx()
